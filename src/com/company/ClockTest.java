@@ -21,7 +21,6 @@ class ClockTest {
     @Test
     void timeBoundaryZero() {
         // Check zero values
-        clockTester.state = State.DISPLAY_TIME;
         clockTester.ready();
         expectedOutput = "Time set to: Hour: 0 Minute: 0 Second: 0";
         assertEquals(expectedOutput,  clockTester.set(0,0,0));
@@ -31,7 +30,6 @@ class ClockTest {
     @Test
     void timeBoundaryNegative() {
         // Check negative values
-        clockTester.state = State.DISPLAY_TIME;
         clockTester.ready();
         expectedOutput = "Time set to: Error! Negative value";
         assertEquals(expectedOutput,  clockTester.set(-1,1,1));
@@ -45,7 +43,6 @@ class ClockTest {
     @Test
     void timeBoundaryToHigh() {
         // Check to high values
-        clockTester.state = State.DISPLAY_TIME;
         clockTester.ready();
         expectedOutput = "Time set to: Error! Hour can not be higher then 24";
         assertEquals(expectedOutput,  clockTester.set(25,1,1));
@@ -61,7 +58,6 @@ class ClockTest {
     @Test
     void timeBoundaryCloseToLimit() {
         // Check to high values
-        clockTester.state = State.DISPLAY_TIME;
         clockTester.ready();
         expectedOutput = "Time set to: Hour: 23 Minute: 1 Second: 1";
         assertEquals(expectedOutput,  clockTester.set(23,1,1));
@@ -77,7 +73,6 @@ class ClockTest {
     @Test
     void dateBoundaryZero() {
         // Check zero values
-        clockTester.state = State.DISPLAY_DATE;
         clockTester.ready();
         expectedOutput = "Date set to: Error! Negative or Zero value";
         assertEquals(expectedOutput,  clockTester.set(1,1,0));
@@ -91,7 +86,6 @@ class ClockTest {
     @Test
     void dateBoundaryNegative() {
         // Check zero values
-        clockTester.state = State.DISPLAY_DATE;
         clockTester.ready();
         expectedOutput = "Date set to: Error! Negative or Zero value";
         assertEquals(expectedOutput,  clockTester.set(1,1,-1));
@@ -105,7 +99,6 @@ class ClockTest {
     @Test
     void dateBoundaryToHigh() {
         // Check to high values
-        clockTester.state = State.DISPLAY_DATE;
         clockTester.ready();
         expectedOutput  = "Date set to: Error! Month can not be higher then 12";
         assertEquals(expectedOutput,  clockTester.set(2024,13,1));
@@ -118,7 +111,6 @@ class ClockTest {
     @Test
     void dateBoundaryCloseToLimit() {
         // Check to high values
-        clockTester.state = State.DISPLAY_DATE;
         clockTester.ready();
         expectedOutput  = "Date set to: Year: 2024 Month: 12 Day: 1";
         assertEquals(expectedOutput,  clockTester.set(2024,12,1));
@@ -130,8 +122,9 @@ class ClockTest {
 
     @Test
     void transition_1_3_1() {
+        clockTester.ready();
         // Check Transition-1-3-1, From Display_Time to Change_Time to Display_Time
-        clockTester.state = State.DISPLAY_TIME;
+        clockTester.ready();
         expectedOutput = "Time ready to be set!";
         assertEquals(expectedOutput,  clockTester.ready());
         expectedOutput = "Time set to: Hour: 20 Minute: 30 Second: 15";
@@ -142,7 +135,7 @@ class ClockTest {
     @Test
     void transisition_1_2_1() {
         // Check Transition-1-2-1, From Display_Time to Display_Date to Display_Time
-        clockTester.state = State.DISPLAY_TIME;
+        clockTester.ready();
         expectedOutput = "Year: 2024 Month: 1 Day: 1";
         assertEquals(expectedOutput,  clockTester.changeMode());
         expectedOutput = "Hour: 0 Minute: 0 Second: 0";
@@ -153,7 +146,7 @@ class ClockTest {
     @Test
     void transisition_1_2_4() {
         // Check Transition-1-2-4, From Display_Time to Display_Date to Change_Date
-        clockTester.state = State.DISPLAY_TIME;
+        clockTester.ready();
         expectedOutput = "Year: 2024 Month: 1 Day: 1";
         assertEquals(expectedOutput,  clockTester.changeMode());
         expectedOutput = "Date ready to be set!";
@@ -164,7 +157,7 @@ class ClockTest {
     @Test
     void transition_2_4_2() {
         // Check Transition-2-4-2, From Display_Date to Change_Date to Display_Date
-        clockTester.state = State.DISPLAY_DATE;
+        clockTester.ready();
         expectedOutput = "Date ready to be set!";
         assertEquals(expectedOutput,  clockTester.ready());
         expectedOutput = "Date set to: Year: 2024 Month: 1 Day: 6";
@@ -175,7 +168,7 @@ class ClockTest {
     @Test
     void transisition_2_1_2() {
         // Check Transition-2-1-2, From Display_Date to Display_Time to Display_Date
-        clockTester.state = State.DISPLAY_DATE;
+        clockTester.ready();
         expectedOutput = "Hour: 0 Minute: 0 Second: 0";
         assertEquals(expectedOutput,  clockTester.changeMode());
         expectedOutput = "Year: 2024 Month: 1 Day: 1";
@@ -186,7 +179,7 @@ class ClockTest {
     @Test
     void transisition_2_1_3() {
         // Check Transition-2-1-3, From Display_Date to Display_Time to Change_Time
-        clockTester.state = State.DISPLAY_DATE;
+        clockTester.ready();
         expectedOutput = "Hour: 0 Minute: 0 Second: 0";
         assertEquals(expectedOutput,  clockTester.changeMode());
         expectedOutput = "Time ready to be set!";
@@ -197,7 +190,7 @@ class ClockTest {
     @Test
     void transisition_3_1_3() {
         // Check Transition-3-1-3, From Change_Time to Display_Time to Change_Time
-        clockTester.state = State.CHANGE_TIME;
+        clockTester.ready();
         expectedOutput = "Time set to: Hour: 12 Minute: 5 Second: 30";
         assertEquals(expectedOutput,  clockTester.set(12, 5, 30));
         expectedOutput = "Time ready to be set!";
@@ -208,7 +201,7 @@ class ClockTest {
     @Test
     void transisition_3_1_2() {
         // Check Transition-3-1-3, From Change_Time to Display_Time to Change_Time
-        clockTester.state = State.CHANGE_TIME;
+        clockTester.ready();
         expectedOutput = "Time set to: Hour: 12 Minute: 5 Second: 30";
         assertEquals(expectedOutput,  clockTester.set(12, 5, 30));
         expectedOutput = "Year: 2024 Month: 1 Day: 1";
@@ -219,7 +212,7 @@ class ClockTest {
     @Test
     void transisition_4_2_4() {
         // Check Transition-4-2-4, From Change_Date to Display_Date to Change_Date
-        clockTester.state = State.CHANGE_DATE;
+        clockTester.ready();
         expectedOutput = "Date set to: Year: 2024 Month: 1 Day: 1";
         assertEquals(expectedOutput,  clockTester.set(2024, 1, 1));
         expectedOutput = "Date ready to be set!";
@@ -230,7 +223,7 @@ class ClockTest {
     @Test
     void transisition_4_2_1() {
         // Check Transition-4-2-1, From Change_Date to Display_Date to Display_Time
-        clockTester.state = State.CHANGE_DATE;
+        clockTester.ready();
         expectedOutput = "Date set to: Year: 2024 Month: 1 Day: 1";
         assertEquals(expectedOutput,  clockTester.set(2024, 1, 1));
         expectedOutput = "Hour: 0 Minute: 0 Second: 0";
@@ -240,7 +233,7 @@ class ClockTest {
     @Test
     void illegalTransition1() {
         // Check illegal Transition, Set() at Display_Date
-        clockTester.state = State.DISPLAY_DATE;
+        clockTester.ready();
         expectedOutput = "Invalid set";
         assertEquals(expectedOutput,  clockTester.set(2024, 1, 1));
         /** PASS **/
@@ -249,7 +242,7 @@ class ClockTest {
     @Test
     void illegalTransition2() {
         // Check illegal Transition, Set() at Display_Time
-        clockTester.state = State.DISPLAY_TIME;
+        clockTester.ready();
         expectedOutput = "Invalid set";
         assertEquals(expectedOutput,  clockTester.set(2024, 1, 1));
         /** PASS **/
@@ -258,7 +251,7 @@ class ClockTest {
     @Test
     void illegalTransition3() {
         // Check illegal Transition, ChangeMode() at Change_Date
-        clockTester.state = State.CHANGE_DATE;
+        clockTester.ready();
         expectedOutput = "Invalid changeMode";
         assertEquals(expectedOutput,  clockTester.changeMode());
         /** PASS **/
@@ -267,7 +260,7 @@ class ClockTest {
     @Test
     void illegalTransition4() {
         // Check illegal Transition, ChangeMode() at Change_Time
-        clockTester.state = State.CHANGE_TIME;
+        clockTester.ready();
         expectedOutput = "Invalid changeMode";
         assertEquals(expectedOutput,  clockTester.changeMode());
         /** PASS **/
@@ -276,7 +269,7 @@ class ClockTest {
     @Test
     void illegalTransition5() {
         // Check illegal Transition, Ready() at Change_Date
-        clockTester.state = State.CHANGE_DATE;
+        clockTester.ready();
         expectedOutput = "Invalid ready";
         assertEquals(expectedOutput,  clockTester.ready());
         /** PASS **/
@@ -285,7 +278,7 @@ class ClockTest {
     @Test
     void illegalTransition6() {
         // Check illegal Transition, Ready() at Change_Time
-        clockTester.state = State.CHANGE_TIME;
+        clockTester.ready();
         expectedOutput = "Invalid ready";
         assertEquals(expectedOutput,  clockTester.ready());
         /** PASS **/
